@@ -1,0 +1,40 @@
+[Unit]
+Description=SPIRE Controller Manager Daemon %i
+PartOf=spire-server.target
+After=network-online.target local-fs.target time-sync.target
+Before=remote-fs-pre.target
+Wants=network-online.target local-fs.target time-sync.target remote-fs-pre.target spire-server.target
+StartLimitIntervalSec=0
+
+[Service]
+WorkingDirectory=/var/lib/spire/server/%i
+StateDirectory=spire/server/%i
+RuntimeDirectory=spire/server/sockets/%i
+RuntimeDirectoryPreserve=true
+ConfigurationDirectory=spire/server
+ExecStart=/bin/spire-controller-manager -config /etc/spire/controller-manager/%i.conf -expand-env
+# https://gist.github.com/ageis/f5595e59b1cddb1513d1b425a323db04
+LockPersonality=true
+MemoryDenyWriteExecute=true
+NoNewPrivileges=true
+PrivateDevices=false
+# Needed by plugins
+PrivateTmp=false
+ProtectControlGroups=true
+ProtectHome=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+ReadOnlyPaths=/
+Restart=always
+RestartSec=5s
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+RestrictNamespaces=true
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+TasksMax=infinity
+
+[Install]
+WantedBy=spire-server.target
