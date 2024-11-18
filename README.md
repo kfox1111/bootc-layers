@@ -9,7 +9,7 @@ Tag one layer and use it as the BASE of the next layer until you have your final
 Example:
 ```
 BASEREPO=yourrepo/bootc-image
-podman build -t $BASEREPO:spire-agent spire-agent/ --build-arg=BASE=$START
+podman build -t $BASEREPO:spire-agent spire-agent/ --build-arg=BASE=quay.io/almalinuxorg/almalinux-bootc:9
 podman build -t $BASEREPO:spire-server spire-server/ --build-arg=BASE=$BASEREPO:spire-agent
 podman build -t $BASEREPO:latest cloud-init/ --build-arg=BASE=$BASEREPO:spire-server
 podman push $BASEREPO:latest
