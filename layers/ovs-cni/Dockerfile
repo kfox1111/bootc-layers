@@ -16,4 +16,4 @@ RUN \
   mv main /ovs
 
 FROM $BASE
-COPY --from=go /ovs /ovs
+COPY --from=go /ovs /etc/cni/bin/ovs
