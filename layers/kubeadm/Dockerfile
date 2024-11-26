@@ -16,7 +16,6 @@ RUN \
   echo 'kargs = ["cgroup_enable=memory","cgroup_memory=1"]' > /usr/lib/bootc/kargs.d/00-cgroup-memory.toml && \
   echo br_netfilter > /etc/modules-load.d/k8s.conf && \
   mkdir -p /usr/libexec/kubernetes/kubelet-plugins/volume/exec && \
-  mv /opt/cni/bin /opt-cni-bin && \
+  mv /opt/cni/bin /etc/cni/bin && \
   mkdir -p /opt/cni/bin && \
-  mkdir -p /var/lib/cni/bin && \
   systemctl enable opt-cni-bin.mount

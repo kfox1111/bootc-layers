@@ -5,7 +5,7 @@ Before=local-fs.target umount.target systemd-tmpfiles-setup.service
 After=var.mount
 
 [Mount]
-What=/var/lib/cni/bin
+What=/etc/cni/bin
 Where=/opt/cni/bin
 Type=none
 Options=bind
