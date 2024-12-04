@@ -36,7 +36,10 @@ RUN \
   curl -L -o /usr/lib/systemd/system/spire-server@.service https://raw.githubusercontent.com/spiffe/spire-examples/refs/heads/main/examples/systemd/system/spire-server@.service && \
   sed -i 's/PrivateTmp=false/PrivateTmp=true/' /usr/lib/systemd/system/spire-server@.service && \
   mkdir -p /etc/spire/server && \
-  systemctl enable spire-server.target spire.target
+  systemctl enable spire-server.target spire.target && \
+  mkdir -p /etc/spire-controller-manager/manifests
+
+#FIXME better place for spire-controller-manager/manifests
 
 COPY main.conf /etc/spire/server/main.conf
 COPY --from=go /tmp/spire/bin/spire-server /usr/bin/spire-server

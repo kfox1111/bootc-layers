@@ -6,7 +6,7 @@ ARG SPIFFE_STEP_SSH_VER=v0.0.2
 ARG STEP_VER=v0.27.5
 
 RUN \
-  dnf install -y https://dl.smallstep.com/gh-release/cli/gh-release-header/v0.27.5/step-cli-$(echo ${STEP_VER} | tr -d v)-1.$(uname -m).rpm && \
+  dnf install -y https://dl.smallstep.com/gh-release/cli/gh-release-header/${STEP_VER}/step-cli-$(echo ${STEP_VER} | tr -d v)-1.$(uname -m).rpm && \
   ARCH2="$(uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/)" && \
   cd /tmp && \
   (ln -s /usr/bin/step-cli /usr/bin/step || true) && \

@@ -6,6 +6,7 @@ ARG USEROPS_NAME=userops
 ARG USEROPS_UID=500
 
 RUN \
+  dnf install -y policycoreutils-python-utils && \
   echo "u ${USEROPS_NAME} ${USEROPS_UID} ${USEROPS_NAME} /${USEROPS_NAME} /bin/bash" > /usr/lib/sysusers.d/${USEROPS_NAME}.conf && \
   echo "m ${USEROPS_NAME} wheel" >> /usr/lib/sysusers.d/${USEROPS_NAME}.conf && \
   echo "d /var/${USEROPS_NAME}home 0700 ${USEROPS_NAME} wheel - -" > /usr/lib/tmpfiles.d/${USEROPS_NAME}.conf && \

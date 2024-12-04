@@ -9,6 +9,7 @@ COPY 99-k8s.conf /usr/lib/sysctl.d/99-k8s.conf
 COPY kubernetes.repo /etc/yum.repos.d/kubernetes.repo
 COPY opt-cni-bin.mount /usr/lib/systemd/system/opt-cni-bin.mount
 RUN \
+  dnf remove -y zram-generator && \
   chmod 600 /etc/NetworkManager/conf.d/calico.conf && \
   sed -i "s/@K8S_VER@/${K8S_VER}/g" /etc/yum.repos.d/kubernetes.repo && \
   dnf install -y kubeadm kubectl kubelet && \
