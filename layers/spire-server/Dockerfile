@@ -8,7 +8,7 @@ RUN \
   git clone https://github.com/kfox1111/spire && \
   cd spire && \
   git checkout x509pop-trustbundle && \
-  grep 'strings.TrimPrefix(SVIDPath, config.SPIFFEPrefix)' pkg/server/plugin/nodeattestor/x509pop/x509pop.go && \
+  grep 'strings.TrimPrefix(svidPath, config.svidPrefix)' pkg/server/plugin/nodeattestor/x509pop/x509pop.go && \
   make bin/spire-server && \
   git clone https://github.com/kfox1111/spire-controller-manager && \
   cd spire-controller-manager && \
