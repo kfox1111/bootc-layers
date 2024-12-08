@@ -29,6 +29,9 @@ RUN \
   cd /tmp && \
   rm -rf /tmp/spire-ha-agent && \
   systemctl enable spire-ha-agent@main && \
+  systemctl disable spire-agent@main && \
+  systemctl enable spire-agent@a && \
+  systemctl enable spire-agent@b && \
   mkdir -p /etc/spire/socat && \
   echo 'SPIRE_SOCAT_PORT=997' > /etc/spire/socat/a.conf && \
   echo 'SPIRE_SOCAT_PORT=998' > /etc/spire/socat/b.conf && \

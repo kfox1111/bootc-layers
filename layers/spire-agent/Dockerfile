@@ -38,9 +38,12 @@ RUN \
   chown root.wheel /bin/get_tpm_pubhash && \
   chown root.wheel /bin/tpm_attestor_agent && \
   rm -rf /tmp/* && \
-  systemctl enable spire.target spire-agent.target
+  systemctl enable spire.target spire-agent.target && \
+  mkdir -p /etc/spiffe && \
+  echo 'SPIFFE_TRUST_DOMAIN=example.org' >> /etc/spiffe/default-trust-domain.env && \
+  ( if ! spire-ha-agent; then systemctl enable spire-agent@main; fi; true )
 
 COPY --from=go /spiffe-helper /usr/bin/spiffe-helper
-COPY main.conf /etc/spire/agent/main.conf
+COPY default.conf /etc/spire/agent/default.conf
 #FIXME remove
 COPY spire-agent@.service /usr/lib/systemd/system/spire-agent@.service

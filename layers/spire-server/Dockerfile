@@ -41,10 +41,10 @@ RUN \
 
 #FIXME better place for spire-controller-manager/manifests
 
-COPY main.conf /etc/spire/server/main.conf
+COPY default.conf /etc/spire/server/default.conf
 COPY --from=go /tmp/spire/bin/spire-server /usr/bin/spire-server
 #FIXME move later.
 COPY --from=go /tmp/spire/spire-controller-manager/bin/spire-controller-manager /usr/bin/spire-controller-manager
 COPY spire-controller-manager@.service /usr/lib/systemd/system/spire-controller-manager@.service
-COPY spire-controller-manager-main.conf /etc/spire/controller-manager/main.conf
+COPY spire-controller-manager-default.conf /etc/spire/controller-manager/default.conf
 COPY spire-server@.service /usr/lib/systemd/system/spire-server@.service
