@@ -34,6 +34,7 @@ RUN \
   tar -xvf extras.tgz && \
   cp -a spire-extras*/bin/oidc-discovery-provider /usr/bin/spiffe-oidc-discovery-provider && \
   rm -rf /tmp/* && \
-  systemctl enable k8s-spiffe-workload-auth-config
+  systemctl enable k8s-spiffe-workload-auth-config && \
+  systemctl enable k8s-spiffe-oidc-discovery-provider
 
 COPY --from=go /tmp/spire/bin/oidc-discovery-provider /usr/bin/spiffe-oidc-discovery-provider
