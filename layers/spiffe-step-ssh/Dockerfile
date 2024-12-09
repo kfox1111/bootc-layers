@@ -2,7 +2,7 @@ ARG BASE=quay.io/almalinuxorg/almalinux-bootc:9
 
 FROM $BASE
 
-ARG SPIFFE_STEP_SSH_VER=v0.0.2
+ARG SPIFFE_STEP_SSH_VER=v0.0.3
 ARG STEP_VER=v0.27.5
 
 RUN \
