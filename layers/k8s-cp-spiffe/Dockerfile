@@ -20,7 +20,6 @@ ARG SPIRE_VER=v1.11.0
 COPY k8s-spiffe-oidc-discovery-provider.conf /etc/spiffe/k8s-oidc-discovery-provider.conf
 COPY k8s-spiffe-oidc-discovery-provider-helper.conf /etc/spiffe/k8s-oidc-discovery-provider-helper.conf
 COPY k8s-spiffe-oidc-discovery-provider.service /usr/lib/systemd/system/k8s-spiffe-oidc-discovery-provider.service
-COPY k8s-spire-agent@.service /usr/lib/systemd/system/k8s-spire-agent@.service
 COPY auth-config.yaml /etc/kubernetes/auth-config.yaml
 
 RUN \
@@ -35,7 +34,6 @@ RUN \
   tar -xvf extras.tgz && \
   cp -a spire-extras*/bin/oidc-discovery-provider /usr/bin/spiffe-oidc-discovery-provider && \
   rm -rf /tmp/* && \
-  systemctl enable k8s-spiffe-workload-auth-config && \
-  systemctl enable k8s-spiffe-oidc-discovery-provider.service k8s-spire-agent@main
+  systemctl enable k8s-spiffe-workload-auth-config
 
 COPY --from=go /tmp/spire/bin/oidc-discovery-provider /usr/bin/spiffe-oidc-discovery-provider
