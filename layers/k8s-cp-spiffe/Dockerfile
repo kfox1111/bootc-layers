@@ -14,7 +14,7 @@ RUN \
 
 FROM $BASE
 
-ARG K8S_SPIFFE_WORKLOAD_AUTH_CONFIG_VER=v0.0.6
+ARG K8S_SPIFFE_WORKLOAD_AUTH_CONFIG_VER=v0.0.7
 ARG SPIRE_VER=v1.11.0
 
 COPY k8s-spiffe-oidc-discovery-provider.conf /etc/spiffe/k8s-oidc-discovery-provider.conf
