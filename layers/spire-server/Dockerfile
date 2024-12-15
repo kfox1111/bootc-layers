@@ -37,9 +37,7 @@ RUN \
   sed -i 's/PrivateTmp=false/PrivateTmp=true/' /usr/lib/systemd/system/spire-server@.service && \
   mkdir -p /etc/spire/server && \
   systemctl enable spire-server.target spire.target && \
-  mkdir -p /etc/spire-controller-manager/manifests
-
-#FIXME better place for spire-controller-manager/manifests
+  mkdir -p /etc/spire/server/main/manifests
 
 COPY default.conf /etc/spire/server/default.conf
 COPY --from=go /tmp/spire/bin/spire-server /usr/bin/spire-server
