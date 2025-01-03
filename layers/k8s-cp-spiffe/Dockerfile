@@ -8,8 +8,7 @@ RUN \
   cd /tmp/ && \
   git clone https://github.com/kfox1111/spire && \
   cd spire && \
-  git checkout oidc-expand-env && \
-  curl https://patch-diff.githubusercontent.com/raw/spiffe/spire/pull/5690.patch | patch -p1 && \
+  git checkout issuer-fix && \
   make bin/oidc-discovery-provider
 
 FROM $BASE

@@ -5,10 +5,8 @@ RUN \
   apt-get update && \
   apt-get install -y patch && \
   cd /tmp/ && \
-  git clone https://github.com/kfox1111/spire && \
+  git clone https://github.com/spiffe/spire && \
   cd spire && \
-  git checkout x509pop-trustbundle && \
-  grep 'strings.TrimPrefix(svidPath, config.svidPrefix)' pkg/server/plugin/nodeattestor/x509pop/x509pop.go && \
   make bin/spire-server && \
   git clone https://github.com/kfox1111/spire-controller-manager && \
   cd spire-controller-manager && \
