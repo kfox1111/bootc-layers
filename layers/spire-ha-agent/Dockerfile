@@ -36,4 +36,5 @@ RUN \
   echo 'SPIRE_SOCAT_PORT=997' > /etc/spire/socat/a.conf && \
   echo 'SPIRE_SOCAT_PORT=998' > /etc/spire/socat/b.conf && \
   echo 'SPIRE_SOCAT_PORT=999' > /etc/spire/socat/main.conf && \
-  mkdir -p /etc/spiffe/step-ssh
+  mkdir -p /etc/spiffe/step-ssh && \
+  echo -e "vsock" > /usr/lib/modules-load.d/spire-ha-agent.conf
