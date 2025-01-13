@@ -15,7 +15,7 @@ RUN \
 
 FROM $BASE
 
-ARG SPIRE_HA_AGENT_VER=v0.0.4
+ARG SPIRE_HA_AGENT_VER=v0.0.8
 
 COPY --from=go /cid2pid /usr/bin/cid2pid
 RUN \
@@ -25,6 +25,10 @@ RUN \
   curl -L -o /tmp/spire-ha-agent.tar.gz "https://github.com/spiffe/spire-ha-agent/releases/download/${SPIRE_HA_AGENT_VER}/spire-ha-agent_Linux_${ARCH}.tar.gz" && \
   tar -xvf /tmp/spire-ha-agent.tar.gz && \
   mv spire-ha-agent /usr/bin && \
+  curl -L -o /tmp/spire-trust-sync-helper.tar.gz "https://github.com/spiffe/spire-ha-agent/releases/download/${SPIRE_HA_AGENT_VER}/spire-trust-sync-helper_Linux_${ARCH}.tar.gz" && \
+  tar -xvf /tmp/spire-trust-sync-helper.tar.gz && \
+  mkdir -p /usr/libexec/spire/trust-sync/ && \
+  mv spire-trust-sync-helper /usr/libexec/spire/trust-sync && \
   mv systemd/* /usr/lib/systemd/system/ && \
   cd /tmp && \
   rm -rf /tmp/spire-ha-agent && \
