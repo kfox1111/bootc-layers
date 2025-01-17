@@ -29,7 +29,8 @@ jobs:
           cd layers/
           docker build -t l1 spire-agent/ --build-arg=BASE=quay.io/almalinuxorg/almalinux-bootc:9
           docker build -t l2 spire-ha-agent/ --build-arg=BASE=l1
-          docker build -t ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i) cloud-init/ --build-arg=BASE=l2
+          docker build -t l3 spiffe-step-ssh/ --build-arg=BASE=l2
+          docker build -t ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i) cloud-init/ --build-arg=BASE=l3
           docker push ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i)
           sudo apt install podman sqlite3 -y
           mkdir -p output
