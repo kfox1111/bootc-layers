@@ -50,6 +50,6 @@ jobs:
              --rootfs xfs \
              --local \
              ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i)
-          docker build -t ghcr.io/kfox1111/bootc-layers:kubevirt-ci-${{github.ref_name}}-$(uname -i) -f Dockerfile.ci output/
+          docker build -t ghcr.io/kfox1111/bootc-layers:kubevirt-ci-${{github.ref_name}}-$(uname -i) -f ../Dockerfile.ci output/
           docker push ghcr.io/kfox1111/bootc-layers:kubevirt-ci-${{github.ref_name}}-$(uname -i)
 
