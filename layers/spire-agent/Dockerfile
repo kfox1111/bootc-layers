@@ -20,7 +20,6 @@ ARG SPIRE_TPM_PLUGIN_VER=v1.8.7
 
 RUN \
   set -x && \
-  ARCH="$(uname -m | sed s/aarch64/arm64/)" && \
   ARCH2="$(uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/)" && \
   cd /tmp && \
   curl -L -o spire.tgz "https://github.com/spiffe/spire/releases/download/${SPIRE_VER}/spire-$(echo ${SPIRE_VER} | tr -d v)-linux-${ARCH2}-musl.tar.gz" && \
@@ -29,10 +28,10 @@ RUN \
   curl -L -o /usr/lib/systemd/system/spire-agent.target https://raw.githubusercontent.com/spiffe/spire-examples/refs/heads/main/examples/systemd/system/spire-agent.target && \
   curl -L -o /usr/lib/systemd/system/spire-agent@.service https://raw.githubusercontent.com/spiffe/spire-examples/refs/heads/main/examples/systemd/system/spire-agent@.service && \
   curl -L -o /usr/lib/systemd/system/spire.target https://raw.githubusercontent.com/spiffe/spire-examples/refs/heads/main/examples/systemd/system/spire.target && \
-  curl -L -o tpm.tar.gz https://github.com/boxboat/spire-tpm-plugin/releases/download/${SPIRE_TPM_PLUGIN_VER}/spire_tpm_plugin_get_tpm_pubhash_linux_${ARCH}_${SPIRE_TPM_PLUGIN_VER}.tar.gz && \
+  curl -L -o tpm.tar.gz https://github.com/boxboat/spire-tpm-plugin/releases/download/${SPIRE_TPM_PLUGIN_VER}/spire_tpm_plugin_get_tpm_pubhash_linux_${ARCH2}_${SPIRE_TPM_PLUGIN_VER}.tar.gz && \
   tar -xvf tpm.tar.gz && \
   mv get_tpm_pubhash /bin && \
-  curl -L -o tpm.tar.gz https://github.com/boxboat/spire-tpm-plugin/releases/download/${SPIRE_TPM_PLUGIN_VER}/spire_tpm_plugin_tpm_attestor_agent_linux_${ARCH}_${SPIRE_TPM_PLUGIN_VER}.tar.gz && \
+  curl -L -o tpm.tar.gz https://github.com/boxboat/spire-tpm-plugin/releases/download/${SPIRE_TPM_PLUGIN_VER}/spire_tpm_plugin_tpm_attestor_agent_linux_${ARCH2}_${SPIRE_TPM_PLUGIN_VER}.tar.gz && \
   tar -xvf tpm.tar.gz && \
   mv tpm_attestor_agent /bin && \
   chown root.wheel /bin/get_tpm_pubhash && \
