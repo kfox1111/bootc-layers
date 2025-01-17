@@ -34,7 +34,7 @@ jobs:
           mkdir -p output
           docker run \
              --rm \
-             -it \
+             -i \
              --privileged \
              --security-opt label=type:unconfined_t \
              -v $(pwd)/output:/output \
