@@ -23,7 +23,7 @@ RUN \
   ARCH="$(uname -m | sed s/aarch64/arm64/)" && \
   ARCH2="$(uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/)" && \
   cd /tmp && \
-  curl -L -o spire.tgz "https://github.com/spiffe/spire/releases/download/${SPIRE_VER}/spire-$(echo ${SPIRE_VER} | tr -d v)-linux-${ARCH}-musl.tar.gz" && \
+  curl -L -o spire.tgz "https://github.com/spiffe/spire/releases/download/${SPIRE_VER}/spire-$(echo ${SPIRE_VER} | tr -d v)-linux-${ARCH2}-musl.tar.gz" && \
   tar -xvf spire.tgz && \
   mv spire-*/bin/spire-agent /bin && \
   curl -L -o /usr/lib/systemd/system/spire-agent.target https://raw.githubusercontent.com/spiffe/spire-examples/refs/heads/main/examples/systemd/system/spire-agent.target && \
