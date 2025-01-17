@@ -1,0 +1,34 @@
+name: test
+on: [push]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-24.04]
+        arch: ["", "-arm"]
+    runs-on: ${{ matrix.os }}${{ matrix.arch }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          set -xe
+          echo "building: {{github.ref_name}}-$(uname -i)"
+          cd layers/
+          docker build -t l1 spire-agent/ --build-arg=BASE=quay.io/almalinuxorg/almalinux-bootc:9
+          docker build -t l2 spire-ha-agent/ --build-arg=BASE=l1
+          docker build -t ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i) cloud-init/ --build-arg=BASE=l2
+          docker push ghcr.io/kfox1111/buildc-layers:kubevirt-${{github.ref_name}}-$(uname -i)
+
