@@ -36,6 +36,7 @@ jobs:
           sudo sqlite3 /var/lib/containers/storage/db.sql << EOF
           update DBConfig set GraphDriver = 'overlay' where GraphDriver = '';
           EOF
+          sudo busctl
           sudo podman pull ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i)
           sudo podman run \
              --rm \
