@@ -33,8 +33,8 @@ jobs:
           docker push ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i)
           sudo apt install podman -y
           mkdir -p output
-          podman pull ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i)
-          podman run \
+          sudo podman pull ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i)
+          sudo podman run \
              --rm \
              -i \
              --privileged \
