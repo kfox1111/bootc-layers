@@ -31,8 +31,10 @@ jobs:
           docker build -t l2 spire-ha-agent/ --build-arg=BASE=l1
           docker build -t ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i) cloud-init/ --build-arg=BASE=l2
           docker push ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i)
+          sudo apt install podman -y
           mkdir -p output
-          docker run \
+          podman pull ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i)
+          podman run \
              --rm \
              -i \
              --privileged \
