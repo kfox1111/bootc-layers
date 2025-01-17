@@ -31,8 +31,11 @@ jobs:
           docker build -t l2 spire-ha-agent/ --build-arg=BASE=l1
           docker build -t ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i) cloud-init/ --build-arg=BASE=l2
           docker push ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i)
-          sudo apt install podman -y
+          sudo apt install podman sqlite3 -y
           mkdir -p output
+          sudo sqlite3 /var/lib/containers/storage/db.sql << EOF
+          update DBConfig set GraphDriver = 'overlay' where GraphDriver = '';
+          EOF
           sudo podman pull ghcr.io/kfox1111/bootc-layers:kubevirt-${{github.ref_name}}-$(uname -i)
           sudo podman run \
              --rm \
