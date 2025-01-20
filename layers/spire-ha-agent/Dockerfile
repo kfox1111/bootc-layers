@@ -15,7 +15,7 @@ RUN \
 
 FROM $BASE
 
-ARG SPIRE_HA_AGENT_VER=v0.0.8
+ARG SPIRE_HA_AGENT_VER=v0.0.9
 
 COPY --from=go /cid2pid /usr/bin/cid2pid
 RUN \
