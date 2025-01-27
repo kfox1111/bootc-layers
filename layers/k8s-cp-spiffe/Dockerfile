@@ -1,6 +1,6 @@
 ARG BASE=quay.io/almalinuxorg/almalinux-bootc:9
 
-#FIXME remove once upstreamed. k8s-spiffe-oidc-discovery-provider.conf domains is wrong pending a bug fix.
+#FIXME remove once upstreamed.
 FROM docker.io/library/golang:1.23-bookworm as go
 RUN \
   apt-get update && \
@@ -13,8 +13,9 @@ RUN \
 
 FROM $BASE
 
-ARG K8S_SPIFFE_WORKLOAD_AUTH_CONFIG_VER=v0.0.7
-ARG SPIRE_VER=v1.11.1
+ARG EXAMPLES_SNAPSHOT=2025-01-26-1
+ARG SPIRE_VER=1.11.1
+ARG K8S_SPIFFE_WORKLOAD_AUTH_CONFIG_VER=0.0.8
 
 COPY k8s-spiffe-oidc-discovery-provider.conf /etc/spiffe/k8s-oidc-discovery-provider.conf
 COPY k8s-spiffe-oidc-discovery-provider-helper.conf /etc/spiffe/k8s-oidc-discovery-provider-helper.conf
@@ -22,17 +23,8 @@ COPY k8s-spiffe-oidc-discovery-provider.service /usr/lib/systemd/system/k8s-spif
 COPY auth-config.yaml /etc/kubernetes/auth-config.yaml
 
 RUN \
-  cd /tmp && \
-  ARCH="$(uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/)" && \
-  ARCH2="$(uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/)" && \
-  curl -L -o auth-config.tgz https://github.com/spiffe/k8s-spiffe-workload-auth-config/releases/download/${K8S_SPIFFE_WORKLOAD_AUTH_CONFIG_VER}/k8s-spiffe-workload-auth-config_Linux_${ARCH}.tar.gz && \
-  tar -xvf auth-config.tgz && \
-  mv k8s-spiffe-workload-auth-config /usr/bin && \
-  mv systemd/k8s-spiffe-workload-auth-config.service /usr/lib/systemd/system && \
-  curl -L -o extras.tgz https://github.com/spiffe/spire/releases/download/${SPIRE_VER}/spire-extras-$(echo ${SPIRE_VER} | tr -d v)-linux-${ARCH2}-musl.tar.gz && \
-  tar -xvf extras.tgz && \
-  cp -a spire-extras*/bin/oidc-discovery-provider /usr/bin/spiffe-oidc-discovery-provider && \
-  rm -rf /tmp/* && \
+  dnf install -y https://github.com/spiffe/spire-examples/releases/download/${EXAMPLES_SNAPSHOT}/k8s-spiffe-workload-auth-config-${K8S_SPIFFE_WORKLOAD_AUTH_CONFIG_VER}-1.$(uname -m).rpm && \
+  dnf install -y https://github.com/spiffe/spire-examples/releases/download/${EXAMPLES_SNAPSHOT}/spiffe-oidc-discovery-provider-${SPIRE_VER}-1.$(uname -m).rpm && \
   systemctl enable k8s-spiffe-workload-auth-config && \
   systemctl enable k8s-spiffe-oidc-discovery-provider
 

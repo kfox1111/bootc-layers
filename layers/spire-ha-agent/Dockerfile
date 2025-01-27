@@ -1,44 +1,21 @@
 ARG BASE=quay.io/almalinuxorg/almalinux-bootc:9
 
-FROM docker.io/library/ubuntu:24.10 as go
-
-ARG CID2PID_VER=v0.0.1
-
-RUN \
-  apt-get update && \
-  apt-get install -y curl gcc libtracefs-dev pkg-config libtraceevent-dev golang-go git && \
-  cd /tmp && \
-  curl -L -o cid2pid.tar.gz https://github.com/kfox1111/cid2pid/archive/refs/tags/${CID2PID_VER}.tar.gz && \
-  tar -xvf cid2pid.tar.gz && \
-  cd cid2pid-* && \
-  gcc -o /cid2pid cid2pid.c -static /usr/lib/*-linux-gnu/libtracefs.a /usr/lib/*-linux-gnu/libtraceevent.a -I/usr/include/tracefs -I/usr/include/traceevent
+ARG CID2PID_VER=0.0.3
+FROM ghcr.io/kfox1111/cid2pid:v${CID2PID_VER} as cid2pid
 
 FROM $BASE
 
-ARG SPIRE_HA_AGENT_VER=v0.0.9
+ARG EXAMPLES_SNAPSHOT=2025-01-26-1
+ARG SPIRE_HA_AGENT_VER=0.0.11
 
-COPY --from=go /cid2pid /usr/bin/cid2pid
+#FIXME break this up so that socat and trust-sync are per task.
+COPY --from=cid2pid /usr/bin/cid2pid /usr/bin/cid2pid
 RUN \
-  ARCH="$(uname -m | sed s/aarch64/arm64/)" && \
-  mkdir -p /tmp/spire-ha-agent && \
-  cd /tmp/spire-ha-agent && \
-  curl -L -o /tmp/spire-ha-agent.tar.gz "https://github.com/spiffe/spire-ha-agent/releases/download/${SPIRE_HA_AGENT_VER}/spire-ha-agent_Linux_${ARCH}.tar.gz" && \
-  tar -xvf /tmp/spire-ha-agent.tar.gz && \
-  mv spire-ha-agent /usr/bin && \
-  curl -L -o /tmp/spire-trust-sync-helper.tar.gz "https://github.com/spiffe/spire-ha-agent/releases/download/${SPIRE_HA_AGENT_VER}/spire-trust-sync-helper_Linux_${ARCH}.tar.gz" && \
-  tar -xvf /tmp/spire-trust-sync-helper.tar.gz && \
-  mkdir -p /usr/libexec/spire/trust-sync/ && \
-  mv spire-trust-sync-helper /usr/libexec/spire/trust-sync && \
-  mv systemd/* /usr/lib/systemd/system/ && \
-  cd /tmp && \
-  rm -rf /tmp/spire-ha-agent && \
+  dnf install -y https://github.com/spiffe/spire-examples/releases/download/${EXAMPLES_SNAPSHOT}/spire-ha-agent-${SPIRE_HA_AGENT_VER}-1.$(uname -m).rpm && \
+  dnf install -y https://github.com/spiffe/spire-examples/releases/download/${EXAMPLES_SNAPSHOT}/spire-trust-sync-${SPIRE_HA_AGENT_VER}-1.$(uname -m).rpm && \
+  dnf install -y https://github.com/spiffe/spire-examples/releases/download/${EXAMPLES_SNAPSHOT}/spire-socat-${SPIRE_HA_AGENT_VER}-1.$(uname -m).rpm && \
   systemctl enable spire-ha-agent@main && \
   systemctl disable spire-agent@main && \
   systemctl enable spire-agent@a && \
   systemctl enable spire-agent@b && \
-  mkdir -p /etc/spire/socat && \
-  echo 'SPIRE_SOCAT_PORT=997' > /etc/spire/socat/a.conf && \
-  echo 'SPIRE_SOCAT_PORT=998' > /etc/spire/socat/b.conf && \
-  echo 'SPIRE_SOCAT_PORT=999' > /etc/spire/socat/main.conf && \
-  mkdir -p /etc/spiffe/step-ssh && \
   echo -e "vsock" > /usr/lib/modules-load.d/spire-ha-agent.conf
