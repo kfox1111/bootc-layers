@@ -15,7 +15,7 @@ ConfigurationDirectory=spire/agent
 Environment="SPIRE_AGENT_ADDRESS=/var/run/spire/agent/sockets/%i/public/api.sock"
 ExecStart=/bin/spiffe-helper -config /var/run/spire/agent/k8s-%i-x509pop/helper.conf
 ExecStartPre=mkdir -p /run/spire/agent/k8s-%i-x509pop
-ExecStartPre=/bin/bash -c "echo Y2VydF9kaXIgPSAiQENEQCIKc3ZpZF9maWxlX25hbWUgPSAidGxzLmNydCIKc3ZpZF9rZXlfZmlsZV9uYW1lID0gInRscy5rZXkiCnN2aWRfYnVuZGxlX2ZpbGVfbmFtZSA9ICJjYS5jcnQiCg== | base64 -d > /run/spire/agent/k8s-%i-x509pop/helper.conf"
+ExecStartPre=/bin/bash -c "echo Y2VydF9kaXIgPSAiQENEQCIKc3ZpZF9maWxlX25hbWUgPSAidGxzLmNydCIKc3ZpZF9rZXlfZmlsZV9uYW1lID0gInRscy5rZXkiCnN2aWRfYnVuZGxlX2ZpbGVfbmFtZSA9ICJjYS5jcnQiCnJlbmV3X3NpZ25hbCA9ICJTSUdIVVAiCg== | base64 -d > /run/spire/agent/k8s-%i-x509pop/helper.conf"
 ExecStartPre=/bin/sed -i "s^@CD@^/var/run/spire/agent/k8s-%i-x509pop^" /run/spire/agent/k8s-%i-x509pop/helper.conf
 # https://gist.github.com/ageis/f5595e59b1cddb1513d1b425a323db04
 LockPersonality=true
