@@ -6,7 +6,7 @@ FROM ghcr.io/kfox1111/cid2pid:v${CID2PID_VER} as cid2pid
 FROM $BASE
 
 ARG EXAMPLES_SNAPSHOT=2025-01-27-1
-ARG SPIRE_HA_AGENT_VER=0.0.11
+ARG SPIRE_HA_AGENT_VER=0.0.12
 
 #FIXME break this up so that socat and trust-sync are per task.
 COPY --from=cid2pid /usr/bin/cid2pid /usr/bin/cid2pid
