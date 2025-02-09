@@ -6,11 +6,9 @@ FROM $BASE
 
 #FIXME ca from a helper for kubelet -> apiserver
 
-ARG EXAMPLES_SNAPSHOT=2025-01-27-1
-ARG K8S_SPIFFE_WORKLOAD_JWT_EXEC_AUTH_VER=0.0.4
-
 RUN \
-  dnf install -y https://github.com/spiffe/spire-examples/releases/download/${EXAMPLES_SNAPSHOT}/k8s-spiffe-workload-jwt-exec-auth-${K8S_SPIFFE_WORKLOAD_JWT_EXEC_AUTH_VER}-1.$(uname -m).rpm
+  curl -L -o /etc/yum.repos.d/spire-examples.repo https://raw.githubusercontent.com/spiffe/spire-examples/refs/heads/main/examples/rpms/spire-examples.repo && \
+  dnf install -y k8s-spiffe-workload-jwt-exec-auth
 
 COPY kubelet.conf /etc/kubernetes/kubelet.conf
 COPY kubelet-config.yaml /etc/kubernetes/kubelet-config.yaml

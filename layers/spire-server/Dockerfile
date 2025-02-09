@@ -15,15 +15,9 @@ RUN \
 
 FROM $BASE
 
-ARG EXAMPLES_SNAPSHOT=2025-01-27-1
-ARG SPIRE_VER=1.11.1
-ARG SPIRE_TPM_PLUGIN_VER=1.8.7
-
 RUN \
-  dnf install -y https://github.com/spiffe/spire-examples/releases/download/${EXAMPLES_SNAPSHOT}/spire-common-${SPIRE_VER}-1.$(uname -m).rpm && \
-  dnf install -y https://github.com/spiffe/spire-examples/releases/download/${EXAMPLES_SNAPSHOT}/spire-server-${SPIRE_VER}-1.$(uname -m).rpm && \
-  dnf install -y https://github.com/spiffe/spire-examples/releases/download/${EXAMPLES_SNAPSHOT}/spire-server-nodeattestor-tpmdirect-${SPIRE_TPM_PLUGIN_VER}-1.$(uname -m).rpm && \
-  mkdir -p /etc/spire/server && \
+  curl -L -o /etc/yum.repos.d/spire-examples.repo https://raw.githubusercontent.com/spiffe/spire-examples/refs/heads/main/examples/rpms/spire-examples.repo && \
+  dnf install -y spire-common spire-server spire-server-nodeattestor-tpmdirect && \
   systemctl enable spire-server.target spire.target && \
   mkdir -p /etc/spire/server/main/manifests
 

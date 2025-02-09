@@ -1,19 +1,7 @@
 ARG BASE=quay.io/almalinuxorg/almalinux-bootc:9
 
-FROM docker.io/library/golang:1.23-bookworm as go
-ARG OVS_CNI_VER=v0.35.0
-
-RUN \
-  apt-get update && \
-  apt-get install -y jq && \
-  cd /tmp && \
-  curl -L -o ovs.tgz https://github.com/k8snetworkplumbingwg/ovs-cni/archive/refs/tags/v0.35.0.tar.gz && \
-  tar -xvf ovs.tgz && \
-  cd ovs* && \
-  cd cmd && \
-  echo building... && \
-  go build plugin/main.go && \
-  mv main /ovs
+ARG OVS_CNI_VER=v0.38.0
+FROM ghcr.io/k8snetworkplumbingwg/ovs-cni-plugin:${OVS_CNI_VER} as driver
 
 FROM $BASE
-COPY --from=go /ovs /etc/cni/bin/ovs
+COPY --from=driver /ovs /etc/cni/bin/ovs
