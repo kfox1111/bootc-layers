@@ -8,6 +8,7 @@ ARG YQ_VER=v4.44.5
 
 RUN \
   ARCH2="$(uname -m | sed s/aarch64/arm64/ | sed s/x86_64/amd64/)" && \
+  dnf install -y vim-enhanced && \
   cd /tmp && \
   curl -L -o /usr/bin/virtctl https://github.com/kubevirt/kubevirt/releases/download/${VIRTCTL_VER}/virtctl-${VIRTCTL_VER}-linux-${ARCH2} && \
   chmod +x /usr/bin/virtctl && \
