@@ -19,8 +19,8 @@ RUN \
   semanage fcontext -a -t user_home_dir_t "/var/${USEROPS_NAME}home" && \
   semanage fcontext -a -t ssh_home_t "/var/${USEROPS_NAME}home/.ssh" && \
   semanage fcontext -a -t ssh_home_t "/var/${USEROPS_NAME}home/.ssh/authorized_keys" && \
-  mkdir -p /var/${USEROPS_NAME}/.ssh && \
-  touch /var/${USEROPS_NAME}/.ssh/authorized_keys && \
+  mkdir -p /var/${USEROPS_NAME}home/.ssh && \
+  touch /var/${USEROPS_NAME}home/.ssh/authorized_keys && \
   echo "${USEROPS_NAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USEROPS_NAME} && \
   chmod 600 /etc/sudoers.d/${USEROPS_NAME} && \
   echo "PermitRootLogin no" > /etc/ssh/sshd_config.d/10-nologin.conf
