@@ -8,8 +8,8 @@ ARG USEROPS_UID=500
 RUN \
   dnf install -y policycoreutils-python-utils && \
   mkdir -p /etc/sysusers.d && \
-  echo "u ${USEROPS_NAME} ${USEROPS_UID} ${USEROPS_NAME} /${USEROPS_NAME} /bin/bash" > /etc/sysusers.d/${USEROPS_NAME}.conf && \
-  echo "m ${USEROPS_NAME} wheel" >> /etc/sysusers.d/${USEROPS_NAME}.conf && \
+  echo '{"userName": "${USEROPS_NAME}", "uid": ${USEROPS_UID}, "memberOf": "wheel", "disposition": "regular", "locked": true}' > /usr/lib/userdb/${USEROPS_NAME}.user && \
+  ln -s /usr/lib/userdb/${USEROPS_NAME} /usr/lib/userdb/${USEROPS_UID}.user && \
   echo "d /var/${USEROPS_NAME}home 0700 ${USEROPS_NAME} wheel - -" > /usr/lib/tmpfiles.d/${USEROPS_NAME}.conf && \
   echo "d /var/${USEROPS_NAME}home/.ssh 0700 ${USEROPS_NAME} wheel - -" >> /usr/lib/tmpfiles.d/${USEROPS_NAME}.conf && \
   echo "z /var/${USEROPS_NAME}home/.ssh 0700 ${USEROPS_NAME} wheel - -" >> /usr/lib/tmpfiles.d/${USEROPS_NAME}.conf && \
