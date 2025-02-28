@@ -10,6 +10,7 @@ RUN \
   mkdir -p /usr/lib/userdb && \
   echo '{"userName": "'${USEROPS_NAME}'", "uid": '${USEROPS_UID}', "memberOf": "wheel", "disposition": "regular"}' > /usr/lib/userdb/${USEROPS_NAME}.user && \
   ln -s ${USEROPS_NAME}.user /usr/lib/userdb/${USEROPS_UID}.user && \
+  sed -i 's/^\(shadow:[ \t]*files\)$/\1 systemd/' /etc/nsswitch.conf && \
   echo "d /var/${USEROPS_NAME}home 0700 ${USEROPS_NAME} wheel - -" > /usr/lib/tmpfiles.d/${USEROPS_NAME}.conf && \
   echo "d /var/${USEROPS_NAME}home/.ssh 0700 ${USEROPS_NAME} wheel - -" >> /usr/lib/tmpfiles.d/${USEROPS_NAME}.conf && \
   echo "z /var/${USEROPS_NAME}home/.ssh 0700 ${USEROPS_NAME} wheel - -" >> /usr/lib/tmpfiles.d/${USEROPS_NAME}.conf && \
