@@ -3,6 +3,7 @@ ARG BASE=quay.io/almalinuxorg/almalinux-bootc:9
 FROM $BASE
 
 ARG K8S_VER=v1.30
+ARG TIMESYNC=
 
 COPY calico.conf /etc/NetworkManager/conf.d/calico.conf
 COPY 99-k8s.conf /usr/lib/sysctl.d/99-k8s.conf
@@ -19,4 +20,5 @@ RUN \
   mkdir -p /usr/libexec/kubernetes/kubelet-plugins/volume/exec && \
   mv /opt/cni/bin /etc/cni/bin && \
   mkdir -p /opt/cni/bin && \
-  systemctl enable opt-cni-bin.mount
+  systemctl enable opt-cni-bin.mount && \
+  ( if [ "x$TIMESYNC" != "x" ]; then mkdir -p /etc/systemd/system/kubelet.service.d; mkdir -p /etc/systemd/system/time-sync.target.d; echo -e '[Unit]\nAfter=time-sync.target\nRequires=time-sync.target' > /etc/systemd/system/kubelet.service.d/99-time-sync.conf; echo -e '[Unit]\nRequires=chrony-wait.service' > /etc/systemd/system/time-sync.target.d/requires.conf; systemctl enable chronyd chrony-wait.service; fi; true )
