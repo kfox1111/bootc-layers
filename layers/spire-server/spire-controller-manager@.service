@@ -13,11 +13,13 @@ RuntimeDirectory=spire/controller-manager/sockets/%i
 RuntimeDirectoryPreserve=true
 ConfigurationDirectory=spire/controller-manager
 EnvironmentFile=-/etc/spiffe/default-trust-domain.env
+EnvironmentFile=-/etc/spiffe/server/default.env
+EnvironmentFile=-/etc/spire/server/%i.env
+EnvironmentFile=-/etc/spire/server/%i/env
 EnvironmentFile=-/etc/spire/controller-manager/%i.env
-Environment=INSTANCE=%i
-ExecStart=/bin/spire-controller-manager -config /var/lib/spire/controller-manager/%i/config -expand-env
-ExecStartPre=mkdir -p /var/lib/spire/controller-manager/%i
-ExecStartPre=/bin/bash -c "if [ -f /etc/spire/controller-manager/%i.conf ]; then cp -a /etc/spire/controller-manager/%i.conf /var/lib/spire/controller-manager/%i/config; else cp -a /etc/spire/controller-manager/default.conf /var/lib/spire/controller-manager/%i/config; fi"
+EnvironmentFile=-/etc/spire/server/%i/controller-manager.env
+Environment=SYSTEMD_INSTANCE=%i
+ExecStart=/usr/libexec/spire/controller-manager/start.sh
 # https://gist.github.com/ageis/f5595e59b1cddb1513d1b425a323db04
 LockPersonality=true
 MemoryDenyWriteExecute=true
