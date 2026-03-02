@@ -8,10 +8,10 @@ ARG CONTAINERD_VER=
 COPY containerd.toml /etc/containerd/config.toml
 COPY docker-io.repo /etc/yum.repos.d/docker-io.repo
 RUN \
-  export CONTAINERD_VER="${CONTAINERD_VER:+ -${CONTAINERD_VER}}" && \
+  export COMPUTED_CONTAINERD_VER="${CONTAINERD_VER:+ -${CONTAINERD_VER}}" && \
   sed -i "s^@SANDBOX_IMAGE@^${SANDBOX_IMAGE}^g" /etc/containerd/config.toml && \
   mkdir -p /etc/containerd/certs.d && \
-  dnf install -y "containerd.io${CONTAINERD_VER}" && \
+  dnf install -y "containerd.io${COMPUTED_CONTAINERD_VER}" && \
   systemctl enable containerd && \
   mkdir -p /usr/lib/systemd/system/containerd.service.d && \
   echo '[Service]' > /usr/lib/systemd/system/containerd.service.d/10-nofile.conf && \
