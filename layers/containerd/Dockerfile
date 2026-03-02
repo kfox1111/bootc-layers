@@ -8,9 +8,7 @@ ARG CONTAINERD_VER=
 COPY containerd.toml /etc/containerd/config.toml
 COPY docker-io.repo /etc/yum.repos.d/docker-io.repo
 RUN \
-  if [ "x${CONTAINERD_VER}" != "x" ]; then
-    CONTAINERD_VER="-${CONTAINERD_VER}"
-  fi
+  export CONTAINERD_VER="${CONTAINERD_VER:+ -${CONTAINERD_VER}}" && \
   sed -i "s^@SANDBOX_IMAGE@^${SANDBOX_IMAGE}^g" /etc/containerd/config.toml && \
   mkdir -p /etc/containerd/certs.d && \
   dnf install -y "containerd.io${CONTAINERD_VER}" && \
